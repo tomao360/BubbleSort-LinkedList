@@ -112,7 +112,7 @@ void GrillRandomNumber()
 	LogEvent("Start inserting random numbers to the list");
 
 	srand(time(NULL));
-	for (int i = 0; i < 1000; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		Add(rand());
 	}
@@ -203,6 +203,7 @@ void BubbleSort()
 	while (counter != 0)
 	{
 		counter = 0;
+		currentItem = Head;
 
 		while (currentItem != NULL)
 		{
@@ -210,13 +211,11 @@ void BubbleSort()
 			{
 				Replace(currentItem);
 				counter++;
+				currentItem = currentItem->prev;
 			}
 
 			currentItem = currentItem->next;
 		}
-
-		currentItem = Head;
-		
 	}
 	
 	LogEvent("End sort list");
