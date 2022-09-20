@@ -96,13 +96,15 @@ void PrintList()
 {
 	LogEvent("The list has been printed");
 
+	int countItem = 1;
 	struct ItemNum* currentItem = Head;
 
 	printf("\nThe resulting linked list:\n");
 	while (currentItem != NULL)
 	{
-		printf("Item->num = %d\n", currentItem->num);
+		printf("#%d Item->num = %d\n",countItem, currentItem->num);
 		currentItem = currentItem->next;
+		countItem++;
 	}
 }
 
@@ -112,7 +114,7 @@ void GrillRandomNumber()
 	LogEvent("Start inserting random numbers to the list");
 
 	srand(time(NULL));
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 100000; i++)
 	{
 		Add(rand());
 	}
@@ -136,8 +138,6 @@ void Replace(struct ItemNum* item)
 	}
 	else if (item == Head && item->next == Tail) //2 Items in the list: Head and Tail
 	{
-		LogEventVal("Swap Item", item->num);
-
 		item->prev = Tail;
 		item->next = NULL;
 		Tail->prev = NULL;
@@ -147,8 +147,6 @@ void Replace(struct ItemNum* item)
 	}
 	else if (item == Head && item->next != NULL) //2 first Items in the list
 	{
-		LogEventVal("Swap Item", item->num);
-
 		item->next = item->next->next;
 		item->next->prev->next = item;
 		item->next->prev->prev = NULL;
@@ -158,8 +156,6 @@ void Replace(struct ItemNum* item)
 	}
 	else if (item->next == Tail && item->prev != NULL) //2 last Items in the list
 	{
-		LogEventVal("Swap Item", item->num);
-
 		item->prev->next = item->next;
 		item->next->prev = item->prev;
 		item->next->next = item;
@@ -169,8 +165,6 @@ void Replace(struct ItemNum* item)
 	}
 	else //2 middle Items
 	{
-		LogEventVal("Swap Item", item->num);
-
 		item->prev->next = item->next;
 		item->next = item->next->next;
 		item->next->prev->prev = item->prev;
@@ -184,12 +178,9 @@ void Replace(struct ItemNum* item)
 void BubbleSort()
 {
 	//Start calculation of time
-	time_t t;
-	time(&t);
-	struct tm* timeinfo;
-	timeinfo = localtime(&t);
-	int startSec, endSec, time;
-	startSec = timeinfo->tm_sec;
+	time_t t1;
+	time(&t1);
+	
 	
 	//Starting to sort the list
 	struct ItemNum* currentItem = Head;
@@ -199,6 +190,7 @@ void BubbleSort()
 		return;
 	}
 
+	LogEvent("Swap Item");
 	int counter = 1;
 	while (counter != 0)
 	{
@@ -218,11 +210,16 @@ void BubbleSort()
 		}
 	}
 	
+	
 	LogEvent("End sort list");
-	endSec = timeinfo->tm_sec;
-	time = endSec - startSec; //Calculation of the time of sorting the list
+
+	time_t t2;
+	time(&t2);
+	time_t t3 = t2-t1;
+	struct tm* timeinfo;
+	timeinfo = localtime(&t3);
 	char str[100];
-	sprintf(str, "Time between start and end is: %d seconds", time);
+	sprintf(str, "Time between start sort and end sort is: %02d minutes and %02d seconds", timeinfo->tm_min, timeinfo->tm_sec);
 	LogEvent(str);
 }
 
